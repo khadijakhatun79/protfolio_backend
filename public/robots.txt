@@ -1,0 +1,64 @@
+# ============================================================
+# robots.txt — CoachingBD API
+# Instructs web crawlers what they can and cannot access.
+# NOTE: This is a guideline for well-behaved bots ONLY.
+# It does NOT provide real security against malicious actors.
+# ============================================================
+
+User-agent: *
+
+# -----------------------------------------------
+# Allow public-facing routes only
+# -----------------------------------------------
+Allow: /$
+Allow: /api/v1/public/
+
+
+
+# -----------------------------------------------
+# Block sensitive config and admin paths
+# -----------------------------------------------
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /config/
+Disallow: /settings
+
+# -----------------------------------------------
+# Block common exploit attempt paths
+# -----------------------------------------------
+Disallow: /wp-admin/
+Disallow: /wp-content/
+Disallow: /wp-includes/
+Disallow: /xmlrpc.php
+Disallow: /phpmyadmin/
+Disallow: /admin.php
+Disallow: /login.php
+Disallow: /.php
+Disallow: /.asp
+Disallow: /.jsp
+
+# -----------------------------------------------
+# Block development, build & environment files
+# -----------------------------------------------
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /build/
+Disallow: /.env
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /yarn.lock
+Disallow: /Dockerfile
+Disallow: /cloudbuild.yaml
+
+# -----------------------------------------------
+# Block version control and server config files
+# -----------------------------------------------
+Disallow: /.git/
+Disallow: /.svn/
+Disallow: /.htaccess
+Disallow: /.gitignore
+
+# -----------------------------------------------
+# Crawl-delay to reduce bot load
+# -----------------------------------------------
+Crawl-delay: 10

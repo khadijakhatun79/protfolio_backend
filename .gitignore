@@ -1,0 +1,12 @@
+/node_modules
+
+package-lock.json
+
+
+.env
+.flaskenv*
+!.env.project
+!.env.vault
+
+# Security & app logs (only on server)
+/logs
