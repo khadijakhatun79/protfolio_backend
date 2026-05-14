@@ -25,7 +25,7 @@ function normalizePort(val) {
     }
 
     if (port >= 0) {
-        // port number
+        // port number area
         return port;
     }
 
