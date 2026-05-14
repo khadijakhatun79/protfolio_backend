@@ -3,9 +3,8 @@ const Service = require("./service.model");
 const ApiError = require("../../../utils/ApiError");
 const { get_query } = require("../../../utils/mongooseUtils");
 
-const createService = async (serviceBody, session = null) => {
-  const options = session ? { session } : {};
-  return Service.create([serviceBody], options);
+const createService = async (serviceBody) => {
+  return Service.create(serviceBody);
 };
 
 const queryServices = async (query) => {
@@ -33,24 +32,22 @@ const getServiceById = async (id) => {
   return Service.findById(id);
 };
 
-const updateServiceById = async (id, updateBody, session = null) => {
-  const options = session ? { session } : {};
+const updateServiceById = async (id, updateBody) => {
   const service = await getServiceById(id);
   if (!service) {
     throw new ApiError(httpStatus.NOT_FOUND, "Service not found");
   }
   Object.assign(service, updateBody);
-  await service.save(options);
+  await service.save();
   return service;
 };
 
-const deleteServiceById = async (id, session = null) => {
-  const options = session ? { session } : {};
+const deleteServiceById = async (id) => {
   const service = await getServiceById(id);
   if (!service) {
     throw new ApiError(httpStatus.NOT_FOUND, "Service not found");
   }
-  await service.deleteOne(options);
+  await service.deleteOne();
   return service;
 };
 

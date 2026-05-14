@@ -3,9 +3,8 @@ const Project = require("./project.model");
 const ApiError = require("../../../utils/ApiError");
 const { get_query } = require("../../../utils/mongooseUtils");
 
-const createProject = async (projectBody, session = null) => {
-  const options = session ? { session } : {};
-  return Project.create([projectBody], options);
+const createProject = async (projectBody) => {
+  return Project.create(projectBody);
 };
 
 const queryProjects = async (query) => {
@@ -33,24 +32,22 @@ const getProjectById = async (id) => {
   return Project.findById(id);
 };
 
-const updateProjectById = async (id, updateBody, session = null) => {
-  const options = session ? { session } : {};
+const updateProjectById = async (id, updateBody) => {
   const project = await getProjectById(id);
   if (!project) {
     throw new ApiError(httpStatus.NOT_FOUND, "Project not found");
   }
   Object.assign(project, updateBody);
-  await project.save(options);
+  await project.save();
   return project;
 };
 
-const deleteProjectById = async (id, session = null) => {
-  const options = session ? { session } : {};
+const deleteProjectById = async (id) => {
   const project = await getProjectById(id);
   if (!project) {
     throw new ApiError(httpStatus.NOT_FOUND, "Project not found");
   }
-  await project.deleteOne(options);
+  await project.deleteOne();
   return project;
 };
 
