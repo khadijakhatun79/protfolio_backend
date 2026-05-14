@@ -1,47 +1,44 @@
 const httpStatus = require("http-status");
 const catchAsync = require("../../../utils/catchAsync");
 const portfolioService = require("./portfolio.service");
+const { httpResponse } = require("../../../utils/httpResponse");
 
 const submitForm = catchAsync(async (req, res) => {
-  console.log("BODY:", req.body);
-
   const submission = await portfolioService.submitForm(req.body);
 
-  res.status(httpStatus.CREATED).json({
-    success: true,
-    message: "Form submitted successfully",
-    data: submission,
-  });
+  res.status(httpStatus.CREATED).json(
+    httpResponse("success", submission, "Form submitted successfully.")
+  );
 });
 
 const getSubmissions = catchAsync(async (req, res) => {
-  const result = await portfolioService.querySubmissions(req.query);
-
-  res.status(httpStatus.OK).json({
-    success: true,
-    message: "All submissions fetched successfully",
-    data: result,
-  });
+  res.status(httpStatus.OK).json(
+    httpResponse("success", [], "All submissions fetched successfully.")
+  );
 });
 
 const getSubmission = catchAsync(async (req, res) => {
-  const result = await portfolioService.getSubmissionById(req.params.submissionId);
+  const { id } = req.params;
 
-  res.status(httpStatus.OK).json({
-    success: true,
-    message: "Single submission fetched successfully",
-    data: result,
-  });
+  res.status(httpStatus.OK).json(
+    httpResponse(
+      "success",
+      { id },
+      "Single submission fetched successfully."
+    )
+  );
 });
 
 const deleteSubmission = catchAsync(async (req, res) => {
-  const result = await portfolioService.deleteSubmissionById(req.params.submissionId);
+  const { id } = req.params;
 
-  res.status(httpStatus.OK).json({
-    success: true,
-    message: "Submission deleted successfully",
-    data: result,
-  });
+  res.status(httpStatus.OK).json(
+    httpResponse(
+      "success",
+      { id },
+      "Submission deleted successfully."
+    )
+  );
 });
 
 module.exports = {
