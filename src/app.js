@@ -34,7 +34,7 @@ app.set("view engine", "ejs");
 app.use("/api", indexRouter);
 
 console.log("console form app.js", process.env.NODE_ENV);
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
     res.send("Portfolio Backend Server is Running!");
 });
 

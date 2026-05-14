@@ -1,49 +1,45 @@
-const httpStatus = require("http-status");
 const PortfolioForm = require("./portfolio.model");
 const ApiError = require("../../../utils/ApiError");
-const { get_query } = require("../../../utils/mongooseUtils");
+const httpStatus = require("http-status");
 
+// CREATE
 const submitForm = async (formData) => {
-  return await PortfolioForm.create(formData);
+  const result = await PortfolioForm.create(formData);
+  return result;
 };
 
-const querySubmissions = async (query) => {
-  const { searchFields, ...tempQuery } = query;
-
-  const { data, meta, page, pageSize } = get_query(
-    PortfolioForm,
-    tempQuery,
-    {},
-    searchFields || ["name", "email", "subject", "message"]
-  );
-
-  let [singlePageData, totalDocs] = await Promise.all([data, meta]);
+// GET ALL
+const querySubmissions = async (query = {}) => {
+  const data = await PortfolioForm.find().sort({ createdAt: -1 });
 
   return {
-    data: singlePageData,
+    data,
     metaData: {
-      page,
-      totalPages: Math.ceil((totalDocs[0]?.count || 0) / pageSize),
-      perPage: pageSize,
-      total: totalDocs[0]?.count || 0,
+      total: data.length,
     },
   };
 };
 
+// GET ONE
 const getSubmissionById = async (id) => {
-  return PortfolioForm.findById(id);
-};
+  const result = await PortfolioForm.findById(id);
 
-const deleteSubmissionById = async (id) => {
-  const submission = await getSubmissionById(id);
-
-  if (!submission) {
+  if (!result) {
     throw new ApiError(httpStatus.NOT_FOUND, "Submission not found");
   }
 
-  await submission.deleteOne();
+  return result;
+};
 
-  return submission;
+// DELETE
+const deleteSubmissionById = async (id) => {
+  const result = await PortfolioForm.findByIdAndDelete(id);
+
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Submission not found");
+  }
+
+  return result;
 };
 
 module.exports = {
